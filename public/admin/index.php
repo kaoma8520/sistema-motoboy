@@ -23,6 +23,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         <tr><td>123</td><td>João</td><td>Maria</td><td>PAGO</td><td>R$ 25,00</td></tr>
         <!-- Aqui listaria os pedidos reais -->
     </table>
+    <a href="dashboard.php">Dashboard</a>
+    <a href="financeiro.php">Painel Financeiro</a>
+    <a href="notificacoes.php">Notificações WhatsApp</a>
     <a href="logout.php" style="display:block;margin:20px auto 0;width:fit-content;">Sair</a>
 </body>
 </html>

@@ -28,6 +28,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'deliverer') {
         </form>
     </div>
     <h3>Saldo: R$ 0,00</h3>
+    <a href="historico.php">Histórico de Entregas</a><br>
+    <a href="financeiro.php">Painel Financeiro</a><br>
+    <a href="areas.php">Minhas Áreas de Atuação</a><br>
     <a href="logout.php" style="display:block;margin:20px auto 0;width:fit-content;">Sair</a>
 </body>
 </html>

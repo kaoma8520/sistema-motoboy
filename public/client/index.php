@@ -29,8 +29,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'client') {
             <option value="PIX">PIX</option>
             <option value="CARTAO">Cartão</option>
         </select>
+        <input type="text" name="cupom" placeholder="Cupom de desconto">
         <button type="submit">Solicitar</button>
     </form>
+    <a href="mapa_entrega.php">Acompanhar Entrega (Exemplo)</a>
+    <a href="avaliar.php">Avaliar Entregador (Exemplo)</a>
+    <a href="historico.php">Histórico de Pedidos</a>
     <a href="logout.php" style="display:block;margin:20px auto 0;width:fit-content;">Sair</a>
 </body>
 </html>

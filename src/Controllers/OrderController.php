@@ -42,6 +42,17 @@ class OrderController {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$client_id, $closestDeliverer, $origin_lat, $origin_lng, $dest_lat, $dest_lng, $distance_km, $weight_kg, $price]);
         $order_id = $pdo->lastInsertId();
+        // Notificar entregador (mock)
+        require_once __DIR__ . '/../Helpers/EmailHelper.php';
+        require_once __DIR__ . '/../Helpers/WhatsappHelper.php';
+        // Buscar e-mail e telefone do entregador
+        $stmt = $pdo->prepare("SELECT email, phone FROM users WHERE id = ?");
+        $stmt->execute([$closestDeliverer]);
+        $entregador = $stmt->fetch();
+        if ($entregador) {
+            EmailHelper::enviar($entregador['email'], 'Novo pedido disponível', 'Você tem um novo pedido para aceitar!');
+            WhatsappHelper::enviar($entregador['phone'], 'Novo pedido disponível para você!');
+        }
         return ['order_id' => $order_id, 'price' => $price, 'deliverer_id' => $closestDeliverer];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../src/Controllers/OrderController.php';
 require_once __DIR__ . '/../../src/Controllers/PaymentController.php';
+require_once __DIR__ . '/../../config/database.php';
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'client') {
     header('Location: login.php');
@@ -23,6 +24,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     $valor_final = PaymentController::calcularValorFinal($order['price'], $pagamento);
+    // Aplica desconto se cupom válido
+    if (!empty($_POST['cupom'])) {
+        $cupom = trim($_POST['cupom']);
+        $sql = "SELECT discount FROM coupons WHERE code = ? AND (expires_at IS NULL OR expires_at > NOW())";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$cupom]);
+        $desc = $stmt->fetchColumn();
+        if ($desc) {
+            $valor_final = $valor_final * (1 - $desc/100);
+            echo '<p>Cupom aplicado: -'.(float)$desc.'%</p>';
+        }
+    }
     $payment_id = PaymentController::createPayment($order['order_id'], $client_id, $pagamento, $valor_final);
     echo '<h3>Pedido criado!</h3>';
     echo '<p>Valor: R$ ' . number_format($valor_final, 2, ',', '.') . '</p>';

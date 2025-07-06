@@ -53,3 +53,46 @@ CREATE TABLE wallets (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+-- Tabela de avaliações
+CREATE TABLE IF NOT EXISTS ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    client_id INT NOT NULL,
+    deliverer_id INT NOT NULL,
+    rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comment VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (client_id) REFERENCES users(id),
+    FOREIGN KEY (deliverer_id) REFERENCES users(id)
+);
+
+-- Tabela de áreas de atuação dos entregadores
+CREATE TABLE IF NOT EXISTS deliverer_areas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    deliverer_id INT NOT NULL,
+    area VARCHAR(100) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (deliverer_id) REFERENCES users(id)
+);
+
+-- Tabela de cupons/descontos
+CREATE TABLE IF NOT EXISTS coupons (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(20) NOT NULL UNIQUE,
+    discount DECIMAL(5,2) NOT NULL, -- percentual
+    expires_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de notificações WhatsApp
+CREATE TABLE IF NOT EXISTS whatsapp_notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numero VARCHAR(20) NOT NULL,
+    mensagem TEXT NOT NULL,
+    status ENUM('PENDENTE','ENVIADA','FALHOU') DEFAULT 'PENDENTE',
+    response TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    sent_at DATETIME
+);

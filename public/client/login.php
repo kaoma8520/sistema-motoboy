@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="senha" placeholder="Senha" required>
         <button type="submit">Entrar</button>
     </form>
-    <a href="register.php">Criar conta</a>
+    <a href="register.php">Criar conta</a><br>
+    <a href="recuperar_senha.php">Esqueci minha senha</a>
 </body>
 </html>
